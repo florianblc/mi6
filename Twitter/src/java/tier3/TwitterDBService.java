@@ -1,4 +1,4 @@
-package simo.mi6.project.tier3;
+package tier3;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

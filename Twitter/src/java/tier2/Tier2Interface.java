@@ -4,7 +4,7 @@ import simo.mi6.project.tier3.TwitterDBService;
 import java.util.List;
 import java.util.ArrayList;
 
-public class tier1Interface {
+public class Tier2Interface {
 
     // Crée un nouvel utilisateur si username n'est pas déjà utilisé.
     // Retourne true si l'utilisateur est créé, false dans le cas concert.
@@ -108,6 +108,28 @@ public class tier1Interface {
         }
 
         return tweets;
+    }
+
+    // Abonne l'utilisateur followerUsername à l'utilisateur followedUsername.
+    // Retourne true si followerUsername et followedUsername existe en base de données 
+    // et si followerUsername n'est pas déjà abonné à followedUsername, false sinon.
+    public boolean startFollowing(String followerUsername, String followedUsername) {
+        try {
+            // Initialisation de la connexion à la base de données.
+            TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
+
+            if (twitterDB.getAllUsers().contains(followerUsername)
+                    && twitterDB.getAllUsers().contains(followedUsername)
+                    && !twitterDB.getUsersFollowedBy(followerUsername).contains(followedUsername)) {
+                // Abonnement à l'utilisateur.
+                twitterDB.startFollowing(followerUsername, followedUsername);
+
+                return true;
+            }
+        } catch (Exception e) {
+        }
+
+        return false;
     }
 
 }

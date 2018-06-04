@@ -1,0 +1,3 @@
+IP: 86.76.4.24
+Port: 3200
+Nom Service: "TwitterDBService"

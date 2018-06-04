@@ -1,6 +1,8 @@
 package tier2;
 
 import simo.mi6.project.tier3.TwitterDBService;
+import java.util.List;
+import java.util.ArrayList;
 
 public class tier1Interface {
 
@@ -80,6 +82,32 @@ public class tier1Interface {
         }
 
         return false;
+    }
+
+    // Retourne la liste des tweets à destination de l'utilisateur username.
+    public List<String> getTweetsForUser(String username) {
+        // Initialisation de la liste des tweets à retourner.
+        List<String> tweets = new ArrayList<>();
+
+        try {
+            // Initialisation de la connexion à la base de données.
+            TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
+
+            // Récupération des utilisateurs suivis par l'utilisateur.
+            List<String> followedUsers = twitterDB.getUsersFollowedBy(username);
+
+            // Pour chaques utilisateurs suivis...
+            for (String user : followedUsers) {
+                // Pour chaques tweet de l'utilisateur suivis...
+                for (String tweet : twitterDB.getTweetsOfUser(user)) {
+                    // Ajout du tweet à la liste des tweets retournés.
+                    tweets.add(tweet);
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return tweets;
     }
 
 }

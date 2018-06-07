@@ -1,4 +1,4 @@
-package tier2;
+package simo.mi6.project.tier2;
 
 import java.rmi.registry.*;
 import simo.mi6.project.tier3.TwitterDBService;

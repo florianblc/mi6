@@ -1,4 +1,4 @@
-package tier2;
+package simo.mi6.project.tier2;
 
 import simo.mi6.project.tier3.TwitterDBService;
 import java.util.List;
@@ -132,4 +132,74 @@ public class Tier2Interface {
         return false;
     }
 
+    // Désabonne l'utilisateur followerUsername de l'utilisateur followedUsername.
+    // Retourne true si followerUsername et followedUsername existe en base de données 
+    // et si followerUsername est abonné à followedUsername, false sinon.
+    public boolean stopFollowing(String followerUsername, String followedUsername) {
+        try {
+            // Initialisation de la connexion à la base de données.
+            TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
+
+            if (twitterDB.getAllUsers().contains(followerUsername)
+                    && twitterDB.getAllUsers().contains(followedUsername)
+                    && twitterDB.getUsersFollowedBy(followerUsername).contains(followedUsername)) {
+                // Désabonnement de l'utilisateur.
+                twitterDB.startFollowing(followerUsername, followedUsername);
+
+                return true;
+            }
+        } catch (Exception e) {
+        }
+
+        return false;
+    }
+
+    // Retourne la liste des utilisateurs qui correspondent à la recherche.
+    public List<String> searchForUser(String searchUsername) {
+        // Liste des utilisateurs correspondant à la recherche.
+        ArrayList<String> matchingUsers = new ArrayList<>();
+
+        try {
+            // Initialisation de la connexion à la base de données.
+            TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
+
+            List<String> users = twitterDB.getAllUsers();
+
+            // Pour chaques utilisateur dans la base de données,
+            // si la chaîne recherchée est contenu dans le nom d'utilisateur...
+            users.stream().filter((user) -> (user.toUpperCase().contains(searchUsername.trim().toUpperCase()))).forEachOrdered((user) -> {
+                // Ajout de l'utilisateur à la liste des utilisateurs retournés.
+                matchingUsers.add(user);
+            });
+        } catch (Exception e) {
+        }
+
+        return matchingUsers;
+    }
+
+    // Retourne la liste des tweets qui correspondent à la recherche.
+    public List<String> searchInTweets(String searchString) {
+        // Liste des tweets correspondant à la recherche.
+        ArrayList<String> tweets = new ArrayList<>();
+
+        try {
+            // Initialisation de la connexion à la base de données.
+            TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
+
+            // Pour chaques utilisateurs de la base de données...
+            for (String user : twitterDB.getAllUsers()) {
+                // Pour chaques tweet de l'utilisateur...
+                for (String tweet : twitterDB.getTweetsOfUser(user)) {
+                    // Si la chaîne recherchée est contenu dans le tweet...
+                    if (tweet.toUpperCase().contains(searchString.trim().toUpperCase())) {
+                        // Ajout du tweet à la liste des tweets retournés.
+                        tweets.add(tweet);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return tweets;
+    }
 }

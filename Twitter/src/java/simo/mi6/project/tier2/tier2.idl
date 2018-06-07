@@ -1,0 +1,17 @@
+module tier2 {
+
+    typedef list<string> Strings;
+
+    interface Tier2 {
+        boolean createUser(in string username, in string password);
+        boolean deleteUser(in string username);
+        boolean userConnexion(in string username, in string password);
+        boolean createNewTweet(in string username, in string tweet);
+        Strings getTweetsForUser(in string username);
+        boolean startFollowing(in string followerUsername, in string followedUsername);
+        boolean stopFollowing(in string followerUsername, in string followedUsername);
+        Strings searchForUser(in string searchUsername);
+        Strings searchInTweets(in string searchString);
+    };
+
+};

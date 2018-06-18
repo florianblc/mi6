@@ -1,15 +1,38 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package simo.mi6.project.tier2;
 
-import simo.mi6.project.tier3.TwitterDBService;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.PUT;
+import javax.ws.rs.core.MediaType;
+import simo.mi6.project.tier3.TwitterDBService;
 import java.util.Arrays;
 
-public class Tier2Impl extends Tier2POA {
+/**
+ * REST Web Service
+ *
+ * @author trist
+ */
+@Path("/")
+public class ServiceWebTier2 {
 
     // Crée un nouvel utilisateur si username n'est pas déjà utilisé.
     // Retourne true si l'utilisateur est créé, false dans le cas concert.
-    public boolean createUser(String username, String password) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("createUser/{username}/{password}")
+    public boolean createUser(@PathParam("username") String username, @PathParam("password") String password) {
         try {
             // Initialisation de la connexion à la base de données.
             TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
@@ -33,7 +56,10 @@ public class Tier2Impl extends Tier2POA {
 
     // Supprime un utilisateur si username est présent en base de données.
     // Return true si l'utilisateur est supprimé, false sinon.
-    public boolean deleteUser(String username) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("deleteUser/{username}")
+    public boolean deleteUser(@PathParam("username") String username) {
         try {
             // Initialisation de la connexion à la base de données.
             TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
@@ -57,7 +83,10 @@ public class Tier2Impl extends Tier2POA {
 
     // Vérifier la correspondance entre le nom d'utilisateur et le mode passe.
     // Retourne true si le couple nom d'utilisateur/Mot de passe est correcte, false sinon.
-    public boolean userConnexion(String username, String password) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("userConnexion/{username}/{password}")
+    public boolean userConnexion(@PathParam("username") String username, @PathParam("password") String password) {
         try {
             // Initialisation de la connexion à la base de données.
             TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
@@ -74,7 +103,10 @@ public class Tier2Impl extends Tier2POA {
 
     // Ajoute un nouveau tweet si username existe en base de données, que le combo username/password est correcte et que le tweet fait < de 280 charactères.
     // Retourne true si le tweet est posté, false sinon.
-    public boolean createNewTweet(String username, String password, String tweet) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("createNewTweet/{username}/{password}/{tweet}")
+    public boolean createNewTweet(@PathParam("username") String username, @PathParam("password") String password, @PathParam("tweet") String tweet) {
         try {
             // Initialisation de la connexion à la base de données.
             TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
@@ -97,7 +129,10 @@ public class Tier2Impl extends Tier2POA {
     }
 
     // Retourne la liste des tweets à destination de l'utilisateur username.
-    public String[] getTweetsForUser(String username) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("getTweetsForUser/{username}")
+    public String getTweetsForUser(@PathParam("username") String username) {
         // Initialisation de la liste des tweets à retourner.
         ArrayList<String> tweetsList = new ArrayList<>();
         String[] tweets;
@@ -126,13 +161,16 @@ public class Tier2Impl extends Tier2POA {
             tweets[i] = tweetsList.get(i);
         }
 
-        return tweets;
+        return Arrays.toString(tweets);
     }
 
     // Abonne l'utilisateur followerUsername à l'utilisateur followedUsername.
     // Retourne true si followerUsername et followedUsername existe en base de données 
     // et si followerUsername n'est pas déjà abonné à followedUsername, false sinon.
-    public boolean startFollowing(String followerUsername, String followedUsername) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("startFollowing/{followerUsername}/{followedUsername}")
+    public boolean startFollowing(@PathParam("followerUsername") String followerUsername, @PathParam("followedUsername") String followedUsername) {
         try {
             // Initialisation de la connexion à la base de données.
             TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
@@ -154,7 +192,10 @@ public class Tier2Impl extends Tier2POA {
     // Désabonne l'utilisateur followerUsername de l'utilisateur followedUsername.
     // Retourne true si followerUsername et followedUsername existe en base de données 
     // et si followerUsername est abonné à followedUsername, false sinon.
-    public boolean stopFollowing(String followerUsername, String followedUsername) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("stopFollowing/{followerUsername}/{followedUsername}")
+    public boolean stopFollowing(@PathParam("followerUsername") String followerUsername, @PathParam("followedUsername") String followedUsername) {
         try {
             // Initialisation de la connexion à la base de données.
             TwitterDBService twitterDB = TwitterDBServiceClient.getTwitterDBServiceClient();
@@ -174,7 +215,10 @@ public class Tier2Impl extends Tier2POA {
     }
 
     // Retourne la liste des utilisateurs qui correspondent à la recherche.
-    public String[] searchForUser(String searchUsername) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("searchForUser/{searchUsername}")
+    public String searchForUser(@PathParam("searchUsername") String searchUsername) {
         // Liste des utilisateurs correspondant à la recherche.
         ArrayList<String> matchingUsersList = new ArrayList<>();
         String[] matchingUser;
@@ -200,11 +244,14 @@ public class Tier2Impl extends Tier2POA {
             matchingUser[i] = matchingUsersList.get(i);
         }
 
-        return matchingUser;
+        return Arrays.toString(matchingUser);
     }
 
     // Retourne la liste des tweets qui correspondent à la recherche.
-    public String[] searchInTweets(String searchString) {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("searchInTweets/{searchString}")
+    public String searchInTweets(@PathParam("searchString") String searchString) {
         // Liste des tweets correspondant à la recherche.
         ArrayList<String> tweetsList = new ArrayList<>();
         String[] tweets;
@@ -233,11 +280,14 @@ public class Tier2Impl extends Tier2POA {
             tweets[i] = tweetsList.get(i);
         }
 
-        return tweets;
+        return Arrays.toString(tweets);
     }
 
     // Retourne la liste de tout les utilisateurs.
-    public String[] getAllUsers() {
+    @GET
+    @Consumes(MediaType.APPLICATION_XML)
+    @Path("getAllUsers")
+    public String getAllUsers() {
         // Liste des tweets correspondant à la recherche.
         ArrayList<String> usersList = new ArrayList<>();
         String[] users;
@@ -259,6 +309,6 @@ public class Tier2Impl extends Tier2POA {
             users[i] = usersList.get(i);
         }
 
-        return users;
+        return Arrays.toString(users);
     }
 }

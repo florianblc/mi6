@@ -8,7 +8,7 @@ import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NameComponent;
 
-public class ServiceTier2 {
+public class ServiceCorbaTier2 {
 
     public static void main(String[] args) throws Exception {
         // Paramétrage pour la création de la couche ORB :
@@ -51,6 +51,7 @@ public class ServiceTier2 {
 
         // Enregistrement du service (nom, objet CORBA)
         NameComponent[] path = serviceNommage.to_name("Tier2");
+        serviceNommage.unbind(path);
         serviceNommage.bind(path, tier2);
 
         // Démarrage de la couche ORB

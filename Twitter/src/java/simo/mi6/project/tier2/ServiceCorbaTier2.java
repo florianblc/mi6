@@ -51,11 +51,14 @@ public class ServiceCorbaTier2 {
 
         // Enregistrement du service (nom, objet CORBA)
         NameComponent[] path = serviceNommage.to_name("Tier2");
-        serviceNommage.unbind(path);
-        serviceNommage.bind(path, tier2);
+        // serviceNommage.unbind(path);
+        // serviceNommage.bind(path, tier2);
+        serviceNommage.rebind(path, tier2);
 
         // Démarrage de la couche ORB
         orb.run();
+
+        System.out.println("**Serveur Corba démarré**");
     }
 
 }

@@ -134,8 +134,7 @@ public class ServiceWebTier2 {
     @Path("getTweetsForUser/{username}")
     public String getTweetsForUser(@PathParam("username") String username) {
         // Initialisation de la liste des tweets à retourner.
-        ArrayList<String> tweetsList = new ArrayList<>();
-        String[] tweets;
+        String tweets = "";
 
         try {
             // Initialisation de la connexion à la base de données.
@@ -149,19 +148,13 @@ public class ServiceWebTier2 {
                 // Pour chaques tweet de l'utilisateur suivis...
                 for (String tweet : twitterDB.getTweetsOfUser(user)) {
                     // Ajout du tweet à la liste des tweets retournés.
-                    tweetsList.add(tweet);
+                    tweets += user + " a tweeté :\n" + tweet + ";;";
                 }
             }
         } catch (Exception e) {
         }
 
-        // Remplissage de la liste des tweets à retourner.
-        tweets = new String[tweetsList.size()];
-        for (int i = 0; i < tweetsList.size(); i++) {
-            tweets[i] = tweetsList.get(i);
-        }
-
-        return Arrays.toString(tweets);
+        return tweets;
     }
 
     // Abonne l'utilisateur followerUsername à l'utilisateur followedUsername.
@@ -220,8 +213,7 @@ public class ServiceWebTier2 {
     @Path("searchForUser/{searchUsername}")
     public String searchForUser(@PathParam("searchUsername") String searchUsername) {
         // Liste des utilisateurs correspondant à la recherche.
-        ArrayList<String> matchingUsersList = new ArrayList<>();
-        String[] matchingUser;
+        String matchingUser = "";
 
         try {
             // Initialisation de la connexion à la base de données.
@@ -230,21 +222,17 @@ public class ServiceWebTier2 {
             List<String> users = twitterDB.getAllUsers();
 
             // Pour chaques utilisateur dans la base de données,
-            // si la chaîne recherchée est contenu dans le nom d'utilisateur...
-            users.stream().filter((user) -> (user.toUpperCase().contains(searchUsername.trim().toUpperCase()))).forEachOrdered((user) -> {
-                // Ajout de l'utilisateur à la liste des utilisateurs retournés.
-                matchingUsersList.add(user);
-            });
+            for (String user : users) {
+                // si la chaîne recherchée est contenu dans le nom d'utilisateur...
+                if (user.toUpperCase().contains(searchUsername.trim().toUpperCase())) {
+                    // Ajout de l'utilisateur à la liste des utilisateurs retournés.
+                    matchingUser += user + ";;";
+                }
+            }
         } catch (Exception e) {
         }
 
-        // Remplissage de la liste d'utilisateurs à retourner.
-        matchingUser = new String[matchingUsersList.size()];
-        for (int i = 0; i < matchingUsersList.size(); i++) {
-            matchingUser[i] = matchingUsersList.get(i);
-        }
-
-        return Arrays.toString(matchingUser);
+        return matchingUser;
     }
 
     // Retourne la liste des tweets qui correspondent à la recherche.
@@ -253,8 +241,7 @@ public class ServiceWebTier2 {
     @Path("searchInTweets/{searchString}")
     public String searchInTweets(@PathParam("searchString") String searchString) {
         // Liste des tweets correspondant à la recherche.
-        ArrayList<String> tweetsList = new ArrayList<>();
-        String[] tweets;
+        String tweets = "";
 
         try {
             // Initialisation de la connexion à la base de données.
@@ -267,20 +254,14 @@ public class ServiceWebTier2 {
                     // Si la chaîne recherchée est contenu dans le tweet...
                     if (tweet.toUpperCase().contains(searchString.trim().toUpperCase())) {
                         // Ajout du tweet à la liste des tweets retournés.
-                        tweetsList.add(tweet);
+                        tweets += user + " a tweeté :\n" + tweet + ";;";
                     }
                 }
             }
         } catch (Exception e) {
         }
 
-        // Remplissage de la liste des tweets à retourner.
-        tweets = new String[tweetsList.size()];
-        for (int i = 0; i < tweetsList.size(); i++) {
-            tweets[i] = tweetsList.get(i);
-        }
-
-        return Arrays.toString(tweets);
+        return tweets;
     }
 
     // Retourne la liste de tout les utilisateurs.
@@ -289,8 +270,7 @@ public class ServiceWebTier2 {
     @Path("getAllUsers")
     public String getAllUsers() {
         // Liste des tweets correspondant à la recherche.
-        ArrayList<String> usersList = new ArrayList<>();
-        String[] users;
+        String users = "";
 
         try {
             // Initialisation de la connexion à la base de données.
@@ -298,17 +278,11 @@ public class ServiceWebTier2 {
 
             // Pour chaques utilisateurs de la base de données...
             for (String user : twitterDB.getAllUsers()) {
-                usersList.add(user);
+                users += user + ";;";
             }
         } catch (Exception e) {
         }
 
-        // Remplissage de la liste des tweets à retourner.
-        users = new String[usersList.size()];
-        for (int i = 0; i < usersList.size(); i++) {
-            users[i] = usersList.get(i);
-        }
-
-        return Arrays.toString(users);
+        return users;
     }
 }

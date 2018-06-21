@@ -1,9 +1,9 @@
-package simo.mi6.project.tier2;
+package simo.mi6.project.tier2.Corba;
 
+import simo.mi6.project.tier2.TwitterDBServiceClient;
 import simo.mi6.project.tier3.TwitterDBService;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Tier2Impl extends Tier2POA {
 
@@ -114,7 +114,7 @@ public class Tier2Impl extends Tier2POA {
                 // Pour chaques tweet de l'utilisateur suivis...
                 for (String tweet : twitterDB.getTweetsOfUser(user)) {
                     // Ajout du tweet à la liste des tweets retournés.
-                    tweetsList.add(tweet);
+                    tweetsList.add(user + " a tweeté :\n" + tweet);
                 }
             }
         } catch (Exception e) {
@@ -220,7 +220,7 @@ public class Tier2Impl extends Tier2POA {
                     // Si la chaîne recherchée est contenu dans le tweet...
                     if (tweet.toUpperCase().contains(searchString.trim().toUpperCase())) {
                         // Ajout du tweet à la liste des tweets retournés.
-                        tweetsList.add(tweet);
+                        tweetsList.add(user + " a tweeté :\n" + tweet);
                     }
                 }
             }

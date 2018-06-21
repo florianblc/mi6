@@ -1,5 +1,8 @@
 package simo.mi6.project.tier2;
 
+import simo.mi6.project.tier2.Corba.Tier2Impl;
+import simo.mi6.project.tier2.Corba.Tier2;
+import simo.mi6.project.tier2.Corba.Tier2Helper;
 import java.util.Properties;
 import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;

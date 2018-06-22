@@ -53,7 +53,7 @@ public class Tier1ServiceWebClient {
 
                 case "2":
                     if (logged) {
-
+                        deconnexion();
                     } else {
                         connexion();
                     }
@@ -165,6 +165,14 @@ public class Tier1ServiceWebClient {
             password = null;
             System.out.println("Nom d'utilisateur/Mot de passe incorrecte, veuillez réessayer.\n");
         }
+    }
+
+    public static void deconnexion() {
+        login = null;
+        password = null;
+        logged = false;
+
+        System.out.println("Vous êtes maintenant déconnecté.\n");
     }
 
     public static void startFollowing() {
